@@ -1,6 +1,9 @@
 const express = require('express');
 const app = express();
 
+//import dotenv file to this server.js file
+require('dotenv').config();
+
 //we establish the database connection earlier in the server file
 //db.js is returning a database connenction which is defined in db.js file, also the connection is stored in db object
 //now all the database operations in server.js file will be done in db
@@ -24,7 +27,9 @@ app.use('/person', personRoutes);
 const menuItemRoutes = require('./routes/menuItemRoutes');
 app.use('/menu', menuItemRoutes);
 
-app.listen(3000, () => {
+//if the port is defined on dotenv then take that or 3000
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
     console.log('server is listening on port 3000');
 });
 
