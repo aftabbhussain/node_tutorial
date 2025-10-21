@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 
 //we establish the database connection earlier in the server file
-//db.js is returning a database connection which is defined in db.js file, also the connection is stored in db object
+//db.js is returning a database connenction which is defined in db.js file, also the connection is stored in db object
 //now all the database operations in server.js file will be done in db
 const db = require('./db');
 
