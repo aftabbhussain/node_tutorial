@@ -11,21 +11,40 @@ const db = require('./db');
 
 //importing the Person mongoose model from person.js which we will require to handle db operations to the collection people
 //person.js returns a mongoose model upon importing, so Person here will be the actual mongoose model
-// const Person = require('./models/Person');
-// const MenuItem = require('./models/MenuItem');
+
+const MenuItem = require('./models/MenuItem');
 
 //importing body-parser and storing it in the constant variable bodyParser
 const bodyParser = require('body-parser');
 //this adds the json method of bodyParser to express, now the incoming json data is automatically parsed into JS object and stored in req.body
 app.use(bodyParser.json());
 
+
+//Middle ware to log all the requests
+const logRequest = (req, res, next) => {
+    console.log(`[${new Date().toLocaleString()}] Request made to ${req.originalUrl}`);
+    next(); //this is crucial, it must be called to let to coninute the request reponse cycle
+}
+//.use method of express application object sets up middlewares that run for every incoming request
+app.use(logRequest)
+
+const passport = require('./auth');
+app.use(passport.initialize());
+
+//setting up the authentication middleware on the '/' port so when a client request cones 
+//to that port passport will authenticate it
+const localAuthMiddleware = passport.authenticate('local', {session : false});
+app.get('/', (req, res) => {
+    res.send('Welcome to hotel');   
+});
+
 //import the person router files
 const personRoutes = require('./routes/personRoutes');
-app.use('/person', personRoutes);
+app.use('/person',localAuthMiddleware, personRoutes);
 
 //import the menuItem router files
 const menuItemRoutes = require('./routes/menuItemRoutes');
-app.use('/menu', menuItemRoutes);
+app.use('/menu',  menuItemRoutes); //we also authenticate this end point using passport
 
 //if the port is defined on dotenv then take that or 3000
 const PORT = process.env.PORT || 3000;

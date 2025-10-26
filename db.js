@@ -2,12 +2,12 @@
 const mongoose = require('mongoose');
 
 //improt the dotenv file and stoer the mongodb url defined in .env file to DB_URL variable
-require('dotenv').config();
-const DB_URL = process.env.DB_URL;
+// require('dotenv').config();
+// const DB_URL = process.env.DB_URL;
 
 //define the mongodb connection url
-//const mongoURL = 'mongodb://localhost:27017/hotel';
-const mongoURL = DB_URL;
+const mongoURL = 'mongodb://localhost:27017/hotel';
+//const mongoURL = DB_URL;
 
 //set up the mongodb connection
 mongoose.connect(mongoURL, {
