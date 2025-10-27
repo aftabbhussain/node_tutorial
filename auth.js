@@ -2,7 +2,7 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const Person = require('./models/Person');
 
-//we are adding a local strategy object to the passport, created using the LocalStrategy constructor provided by passport-local
+//we are adding a new instance local strategy object to the passport, created using the LocalStrategy constructor provided by passport-local
 passport.use(new LocalStrategy(async (username, password, done) => {
     //this function defines the authentication logic
     try{
@@ -10,7 +10,8 @@ passport.use(new LocalStrategy(async (username, password, done) => {
         if(!user){
             return done(null, false, {message : 'Incorrect username'});
         }
-        if(user.password === password){
+        const isPasswordMatch = await user.comparePassword(password);
+        if(isPasswordMatch){
             //done function signals passport.js about the authentication attempt
             return done(null, user);
         }

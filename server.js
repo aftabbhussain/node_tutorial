@@ -35,12 +35,12 @@ app.use(passport.initialize());
 //to that port passport will authenticate it
 const localAuthMiddleware = passport.authenticate('local', {session : false});
 app.get('/', (req, res) => {
-    res.send('Welcome to hotel');   
+    res.send('Welcome to hotel');
 });
 
 //import the person router files
 const personRoutes = require('./routes/personRoutes');
-app.use('/person',localAuthMiddleware, personRoutes);
+app.use('/person', localAuthMiddleware, personRoutes);
 
 //import the menuItem router files
 const menuItemRoutes = require('./routes/menuItemRoutes');
